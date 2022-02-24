@@ -1,0 +1,14 @@
+{% for artist in artists %}
+<div class="row">
+  <div class="col-3 py-2"><img id='image{{ forloop.counter }}' width="100px" height="100px" src="{{ artist.image.url }}">
+  </div>
+  <div class="col-7 py-2">
+    <div class="col block text-truncate"><a href="{{ artist.link }}">{{ artist.name }}</a></div>
+    <div class="col block text-truncate">{{ artist.genres }}</div>
+  </div>
+  <div class="col">
+    <div class="col-sm-2 py-2"><a class="btn btn-outline-light" href="{% url 'artist_tracks' artist.id artist.name %}">Tracks</a></div>
+    <div class="col-sm-2 py-2"><a class="btn btn-outline-light" href="{% url 'similar_tracks_artist' artist.id artist.name %}">Recs</a></div>  
+  </div>
+  </div>
+{% endfor %}

@@ -1,0 +1,79 @@
+{% for track in tracks %}
+{% if track.top %}
+<div class="row border border-success">
+{% else %}
+<div class="row">
+{% endif %}
+  <div class="col-3 py-2"><img id='image{{ forloop.counter }}{{ length }}' width="100px" height="100px"
+      src="{{ track.image.url }}">
+    <audio id="audio{{ forloop.counter }}{{ length }}" src="{{ track.preview }}"></audio>
+    <script>
+      image = $('#image{{ forloop.counter }}{{ length }}');
+      $('#audio{{ forloop.counter }}{{ length }}').get(0).volume = .4
+      image.on('mouseover', () => {
+        $('#audio{{ forloop.counter }}{{ length }}').get(0).play();
+      });
+      image.on('mouseout', () => {
+        $('#audio{{ forloop.counter }}{{ length }}').get(0).pause();
+      });
+    </script>
+  </div>
+  <div class="col-7 py-2">
+    <div class="col text-start block text-truncate"><a href="{{ track.link }}">{{ track.name }} ({{ track.popularity }})</a></div>
+    <div class="col block text-truncate">{{ track.album_name }}</div>
+    <div class="col block text-truncate">{{ track.artists }}</div>
+    <div class="col">{{ track.date }}</div>
+  </div>
+  <div class="col">
+    <div class="col py-2"><a class="btn btn-outline-light" href="{% url 'similar_tracks_track' track.id track.name %}">Recs</a></div>
+    <div class="col py-2"><a class="btn btn-outline-light" id="add{{ forloop.counter }}{{ track.id }}">Add</a></div>
+  </div> 
+  <script>
+    $("#add{{forloop.counter}}{{ track.id }}").on('click', (e) => {
+      e.preventDefault();
+      $.ajax({
+        type: 'GET',
+        url: "/add",
+        data: { 'image': '{{ track.image.url }}', 'name': '{{ track.name }}', 'artists': '{{ track.artists }}', 'id': '{{ track.id }}' },
+        success: (response) => {
+          if (response['id']) {
+            $('#songs').append(
+            `
+              <div class="row" id="t{{ length }}{{ track.id }}">
+                <div class="col-sm-1"><img class="img-fluid" width="50px" height="50px" src="{{ track.image.url }}"></div>
+                <div class="col-sm-4">
+                  <div class="row">{{ track.name }}</div>
+                  <div class="row">{{ track.artists }}</div>
+                </div>
+                <div class="col-sm-1">
+                  <button type="button" id="b{{ length }}{{ track.id }}" class="btn-close btn-close-white" aria-label="Close"></button>
+                </div>
+              </div>
+            `
+            )
+            $('#track-count').val = "{{playlist_tracks|length}}"
+            $("#b{{ length }}{{ track.id }}").on('click', (e) => {
+              e.preventDefault();
+              $.ajax({
+                type: 'GET',
+                url: "/remove",
+                data: { 'id': track.id},
+                success: (response) => {
+                  $('t{{ length }}{{ track.id }}').empty()
+                },
+                error: (response) => {
+                  alert(response);
+                }
+              })
+            })
+          }
+        },
+        error: (response) => {
+          alert(reponse);
+        }
+      })
+    });
+  </script>
+
+</div>
+{% endfor %}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Spotify Profile</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- Template Main CSS File -->
+  <link href="static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="d-flex align-items-center">
+    <div class="container d-flex flex-column align-items-center">
+
+      <h1>Spotify Profile</h1>
+      <h2>See your spotify profile with top artists, tracks, genres, and more</h2>
+
+      <div>
+        <h5>Sign in now to see your profile!</h5>
+      </div>
+      <div class="text-center"><a class="btn btn-success btn-lg text-light text-center" href="{% url 'sign-in' %}"
+          role="button">Sign In</a></div>
+    </div>
+  </header>
+    <!-- ======= About Us Section ======= -->
+      <div class="container">
+        <div class="section-title">
+          <h2>Current Features</h2>
+        </div>
+
+        <div class="container">
+          <div class="row gx-5">
+            <div class="col-md p-2">
+              <div class="h-100 text-white text-center bg-success card border p-2">
+                <h4 class="card-title card-header p-2">User Profile</h4>
+                <p class="card-text">Listening style, top artists, tracks, genres, etc...</p>
+              </div>
+            </div>
+            <div class="col-md p-2">
+              <div class="h-100 text-white text-center bg-success card border p-2">
+                <h4 class="card-title card-header p-2">Artist Tracklist</h4>
+                <p class="card-text p-2">All the tracks of your favorite artist</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="row gx-5">
+            <div class="col-md p-2">
+              <div class="h-100 text-white text-center bg-success card border p-2">
+                <h4 class="card-title card-header p-2">Recommendations</h4>
+                <p class="card-text p-2">Based on your user profile and favorite artist or track</p>
+              </div>
+            </div>
+            <div class="col-md p-2">
+              <div class="h-100 text-white text-center bg-success card border p-2">
+                <h4 class="card-title card-header p-2">Create or add to playlist</h4>
+                <p class="card-text p-2">Create playlists and add tracks to them</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="row gx-5">
+            <div class="col-md p-2">
+              <div class="h-100 text-white text-center bg-success card border p-2">
+                <h4 class="card-title card-header p-2">Music Discovery</h4>
+                <p class="card-text p-2">Dig in to see similar tracks and artists</p>
+              </div>
+            </div>
+            <div class="col-md p-2">
+              <div class="h-100 text-white text-center bg-success card border p-2">
+                <h4 class="card-title card-header p-2">Music Preview</h4>
+                <p class="card-text p-2">Listen to previews of tracks before adding them</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

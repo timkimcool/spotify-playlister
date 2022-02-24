@@ -1,0 +1,54 @@
+{% extends "header.html" %}
+
+{% block title %} Music Profile {% endblock %}
+
+{% block body %}
+  <div class="row">
+    <div class="row px-5">
+      <div class="col"><h4>TOP TRACKS</h4></div>
+      <div class="col btn-group align-content-center" role="group">
+        <input type="radio" class="btn-check" name="btnradio" id="longbtn" autocomplete="off" checked>
+        <label class="btn btn-outline-primary" for="longbtn">All Time</label>
+      
+        <input type="radio" class="btn-check" name="btnradio" id="mediumbtn" autocomplete="off">
+        <label class="btn btn-outline-primary" for="mediumbtn">6 Months</label>
+      
+        <input type="radio" class="btn-check" name="btnradio" id="shortbtn" autocomplete="off">
+        <label class="btn btn-outline-primary" for="shortbtn">4 Weeks</label>
+      </div>
+    </div>
+
+    <div class="container p-4">
+      <div class="container p-2 align-content-center" id="long">
+        {% include "tracks.html" with tracks=long length="long" %}
+      </div>
+      <div class="container p-2 align-content-center" id="medium">
+        {% include "tracks.html" with tracks=medium length="med" %}
+      </div>
+      <div class="container p-2 align-content-center" id="short">
+        {% include "tracks.html" with tracks=short length="short" %}
+      </div>
+    </div>
+
+  </div>
+  
+  <script>
+    $("#medium").hide();
+    $("#short").hide();
+    $("#longbtn").click(() => {
+      $("#long").show();
+      $("#medium").hide();
+      $("#short").hide();
+    });
+    $("#mediumbtn").click(() => {
+      $("#medium").show();
+      $("#long").hide();
+      $("#short").hide();
+    });
+    $("#shortbtn").click(() => {
+      $("#short").show();
+      $("#medium").hide();
+      $("#long").hide();
+    });
+  </script>
+{% endblock %}

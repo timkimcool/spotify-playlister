@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+<div class="container">
+  <p>Artist Info </p>
+  <li>{{ artist.artist.name }}<br></li>
+  <p>Top tracks Info </p>
+  {% for track in artist.tracks %}
+  <li><a href="{{ track.track_link }}">{{ track.name }}</a><br></li>
+  {% endfor %}
+  <p>Albums </p>
+  {% for album in artist.albums %}
+  <li><a href="{{ album.album_link }}">{{ album.name }} | {{ album.date }}</a><br></li>
+  {% endfor %}
+  <p>Related Artist Info </p>
+  {% for artist in artist.related_artists %}
+  <li><a href="{{ artist.link }}">{{ artist.name }}</a><br></li>
+  {% endfor %}
+</div>
+</body>
+</html>
