@@ -11,6 +11,9 @@ from environs import Env
 env = Env()
 env.read_env()
 
+SPOTIPY_CLIENT_ID = env.str("SPOTIPY_CLIENT_ID")
+SPOTIPY_CLIENT_SECRET = env.str("SPOTIPY_CLIENT_SECRET")
+SPOTIPY_REDIRECT_URI = env.str("SPOTIPY_REDIRECT_URI")
 scope = 'user-top-read playlist-modify-private playlist-modify-public playlist-read-private'
 
 class HomeView(TemplateView):
