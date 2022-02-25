@@ -11,6 +11,10 @@ from environs import Env
 env = Env()
 env.read_env()
 
+import logging
+logger = logging.getLogger('testlogger')
+logger.info('This is a simple log message')
+
 SPOTIPY_CLIENT_ID = env.str("SPOTIPY_CLIENT_ID")
 SPOTIPY_CLIENT_SECRET = env.str("SPOTIPY_CLIENT_SECRET")
 SPOTIPY_REDIRECT_URI = env.str("SPOTIPY_REDIRECT_URI")
@@ -109,15 +113,17 @@ class RemoveTrackView(TemplateView):
 
 class SignInView(TemplateView):
     def get(self, request, **kwargs):
-        context = super().get_context_data(**kwargs)
+        logger.info('1')
         cache_handler = DjangoSessionCacheHandler(request)
         sp_oauth = oauth2.SpotifyOAuth(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, scope=scope, cache_handler=cache_handler)
+        logger.info('2')
         if request.GET.get('code'):
             token_info = sp_oauth.get_access_token(request.GET.get('code'))
         else:
             auth_url = sp_oauth.get_authorize_url()
             return HttpResponseRedirect(auth_url)
         request.session['access'] = token_info["access_token"]
+        logger.info('3')
         sp = spotipy.Spotify(auth=request.session['access'])
         results = get_user_summary(sp)
         playlists = get_user_playlists(sp)
