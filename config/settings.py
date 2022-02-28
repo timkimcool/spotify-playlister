@@ -47,13 +47,13 @@ INSTALLED_APPS = [
     'spotify',
 ]
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
 SESSION_COOKIE_DOMAIN = ".herokuapp.com"
 CSRF_COOKIE_DOMAIN = ".herokuapp.com"
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,9 +99,6 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -137,7 +134,5 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

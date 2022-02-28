@@ -113,29 +113,27 @@ class RemoveTrackView(TemplateView):
 
 class SignInView(TemplateView):
     def get(self, request, **kwargs):
-        logger.info('1')
         cache_handler = DjangoSessionCacheHandler(request)
         sp_oauth = oauth2.SpotifyOAuth(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, scope=scope, cache_handler=cache_handler)
-        logger.info('2')
         if request.GET.get('code'):
             token_info = sp_oauth.get_access_token(request.GET.get('code'))
         else:
             auth_url = sp_oauth.get_authorize_url()
             return HttpResponseRedirect(auth_url)
-        request.session['access'] = token_info["access_token"]
-        logger.info('3')
-        sp = spotipy.Spotify(auth=request.session['access'])
-        results = get_user_summary(sp)
-        playlists = get_user_playlists(sp)
-        request.session['user_id'] = results['user']['id']
-        request.session['image'] = results['user']['image']
-        request.session['playlists'] = playlists
-        request.session['user_features'] = results['user_features']
-        data = {
-            'labels': ','.join([key for key in results['user_features'] if key != 'tempo']),
-            'data': ','.join([str(results['user_features'][key][0]) for key in results['user_features'] if key != 'tempo']),
-        }
-        return render(request, 'sign-in.html', {'results': results, 'data': data, 'playlists': playlists, 'playlist_tracks': request.session['tracks']})
+        if not request.session.get('access', ""):
+            request.session['access'] = token_info["access_token"]
+            sp = spotipy.Spotify(auth=request.session['access'])
+            results = get_user_summary(sp)
+            playlists = get_user_playlists(sp)
+            request.session['user_id'] = results['user']['id']
+            request.session['image'] = results['user']['image']
+            request.session['playlists'] = playlists
+            request.session['user_features'] = results['user_features']
+            data = {
+                'labels': ','.join([key for key in results['user_features'] if key != 'tempo']),
+                'data': ','.join([str(results['user_features'][key][0]) for key in results['user_features'] if key != 'tempo']),
+            }
+        return render(request, 'sign-in.html', {'results': results, 'data': data, 'playlists': playlists, 'playlist_tracks': request.session.get('tracks', "")})
 
 class AddToListView(TemplateView):
     def get(self, request, *args, **kwargs):
