@@ -4,28 +4,6 @@ from environs import Env
 env = Env()
 env.read_env()
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': True,
-        },
-    },
-}
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,13 +26,13 @@ INSTALLED_APPS = [
     'spotify',
 ]
 
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
-# SESSION_COOKIE_DOMAIN = ".herokuapp.com"
-# CSRF_COOKIE_DOMAIN = ".herokuapp.com"
+SESSION_COOKIE_DOMAIN = ".herokuapp.com"
+CSRF_COOKIE_DOMAIN = ".herokuapp.com"
 
-# SECURE_SSL_REDIRECT = False
+SECURE_SSL_REDIRECT = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 ROOT_URLCONF = 'config.urls'
 
