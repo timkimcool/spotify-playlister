@@ -33,40 +33,20 @@
       e.preventDefault();
       $.ajax({
         type: 'GET',
-        url: "/add",
-        data: { 'image': '{{ track.image.url }}', 'name': '{{ track.name }}', 'artists': '{{ track.artists }}', 'id': '{{ track.id }}' },
+        url: "/add_to_playlist",
+        data: { 'track_id': '{{ track.id }}', 'playlist_id': $('#playlist-form option:selected').val()},
         success: (response) => {
-          if (response['id']) {
-            $('#songs').append(
+          $('#main-navbar').append(
             `
-              <div class="row" id="t{{ length }}{{ track.id }}">
-                <div class="col-sm-1"><img class="img-fluid" width="50px" height="50px" src="{{ track.image.url }}"></div>
-                <div class="col-sm-4">
-                  <div class="row">{{ track.name }}</div>
-                  <div class="row">{{ track.artists }}</div>
-                </div>
-                <div class="col-sm-1">
-                  <button type="button" id="b{{ length }}{{ track.id }}" class="btn-close btn-close-white" aria-label="Close"></button>
-                </div>
-              </div>
+            <div class="alert alert-warning alert-dismissible fade show" id="slideup{{forloop.counter}}" role="alert">
+              {{track.name}} was added to ${$('#playlist-form option:selected').text()}!
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             `
-            )
-            $('#track-count').val = "{{playlist_tracks|length}}"
-            $("#b{{ length }}{{ track.id }}").on('click', (e) => {
-              e.preventDefault();
-              $.ajax({
-                type: 'GET',
-                url: "/remove",
-                data: { 'id': track.id},
-                success: (response) => {
-                  $('t{{ length }}{{ track.id }}').empty()
-                },
-                error: (response) => {
-                  alert(response);
-                }
-              })
-            })
-          }
+          );
+          $("#slideup{{forloop.counter}}").fadeTo(1000, 500).slideUp(500, function(){
+              $("#slideup{{forloop.counter}}").slideUp(500);
+          });
         },
         error: (response) => {
           alert(reponse);
@@ -77,3 +57,50 @@
 
 </div>
 {% endfor %}
+
+<!-- $("#add{{forloop.counter}}{{ track.id }}").on('click', (e) => {
+  e.preventDefault();
+  $.ajax({
+    type: 'GET',
+    url: "/add_to_playlist",
+    data: { 'image': '{{ track.image.url }}', 'name': '{{ track.name }}', 'artists': '{{ track.artists }}', 'id': '{{ track.id }}' },
+    success: (response) => {
+      console.log(console.dir(window))
+      if (response.id) {
+        $('#songs').append(
+        `
+          <div class="row" id="t{{ track.id }}">
+            <div class="col-sm-1"><img width="50px" height="50px" src="{{ track.image.url }}"></div>
+            <div class="col-sm-4">
+              <div class="row">{{ track.name }}</div>
+              <div class="row">{{ track.artists }}</div>
+            </div>
+            <div class="col-sm-1">
+              <button type="button" id="b{{ track.id }}" class="btn-close btn-close-white" aria-label="Close"></button>
+            </div>
+          </div>
+        `
+        )
+        $('#track-count').text("{{playlist_tracks|length}}")
+        $("#b{{ track.id }}").on('click', (e) => {
+          e.preventDefault();
+          $.ajax({
+            type: 'GET',
+            url: "/remove",
+            data: { 'id': "{{track.id}}" },
+            success: (response) => {
+              $(`#t{{track.id}}`).empty()
+              $('#track-count').text(parseInt($('#track-count').text() - 1 > 0 ? parseInt($('#track-count').text() - 1) : 0))
+            },
+            error: (response) => {
+              alert(response);
+            }
+          })
+        })
+      }
+    },
+    error: (response) => {
+      alert(reponse);
+    }
+  })
+}); -->

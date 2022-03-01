@@ -6,20 +6,39 @@
 
 <div class="container px-2">
   <div class="container">
-    <div class="text-center p-1"><img width="200px" height="200px" src="{{ results.user.image }}"></div>
-    <div class="text-center p-1">{{ results.user.name }}</div>
-    <div class="text-center p-1">{{ results.user.email }}</div>
+    <div class="text-center p-1"><img width="200px" height="200px" src="{{ results.image }}"></div>
+    <h4 class="text-center p-1">{{ results.id }}</h4>
+    <div class="text-center p-1">{{ results.email }}</div>
   </div>
-
-  <!-- <div class="offcanvas offcanvas-top show" tabindex="-1" id="offcanvas">
+  {% if first %}
+  <div class="offcanvas offcanvas-top show" tabindex="-1" id="offcanvas">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasLabel">Offcanvas</h5>
+      <h5 class="offcanvas-title" id="offcanvasLabel">Welcome!</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
-      Content for the offcanvas goes here. You can place just about any Bootstrap component or custom elements here.
+      <ul>The number inside the parenthesis is popularity (out of 100)</ul>
+      <ul>Click on See more to dig into the your artists and tracks</ul>
+      <ul>Click the "Recs" button to see track recommendations based on artist/track and your listening preference</ul>
+      <ul>Choose a playlist and click "Add" to add the track to your playlist</ul>
+      <ul>Select "+New Playlist" to create a new playlist</ul>
     </div>
-  </div> -->
+  </div>
+  <script>
+    $(document).ready(() => {
+      $.ajax({
+        type: 'GET',
+        url: '/first',
+        data: {},
+        success: (response) => {
+        },
+        error: (response) => {
+          alert(response)
+        }
+      })
+    });
+  </script>
+  {% endif %}
 
   <div class="container">
     <div class="row gx-5">

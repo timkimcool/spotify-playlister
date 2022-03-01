@@ -20,7 +20,7 @@ def get_user_summary(sp) -> Dict:
                 'instrumentalness', 'popularity', 'speechiness', 'tempo', 'valence'])
     '''
     summary_info = {}
-    summary_info['user'] = get_user_profile_info(sp)
+    summary_info['id'], summary_info['name'], summary_info['email'], summary_info['image'] = get_user_profile_info(sp)
     summary_info['artists'], summary_info['genres'] = get_user_top_artist_info(sp)
     summary_info['tracks'], summary_info['user_features'] = get_user_top_track_info(sp)
     summary_info['artists'] = summary_info['artists'][0:20]
@@ -35,17 +35,18 @@ def get_user_profile_info(sp) -> Dict:
     user_info['name'] = user_profile['display_name']
     user_info['email'] = user_profile.get('email', "")
     user_info['image'] = user_profile['images'][2] if user_profile['images'] else false_link
-    return user_info
+    return user_info['id'], user_info['name'], user_info['email'], user_info['image']
 
 def get_user_top_artist_info(sp) -> Dict:
     artists = []
     genres = {}
+    false_link = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/271deea8-e28c-41a3-aaf5-2913f5f48be6/de7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI3MWRlZWE4LWUyOGMtNDFhMy1hYWY1LTI5MTNmNWY0OGJlNlwvZGU3ODM0cy02NTE1YmQ0MC04YjJjLTRkYzYtYTg0My01YWMxYTk1YThiNTUuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BopkDn1ptIwbmcKHdAOlYHyAOOACXW0Zfgbs0-6BY-E'
     genre_info = {'top': [], 'other': []}
     top_artists = sp.current_user_top_artists(time_range='long_term', limit=50)['items']
     genre_total = len(top_artists)
     for artist in top_artists:
         artist_info = {}
-        artist_info['image'] = artist['images'][-1] if artist['images'] else False
+        artist_info['image'] = artist['images'][-1] if artist['images'] else false_link
         artist_info['name'] = artist['name']
         artist_info['followers'] = artist['followers']['total']
         artist_info['genres'] = ", ".join(artist['genres'])
@@ -74,9 +75,10 @@ def get_user_top_track_info(sp) -> Dict:
     user_features = {}
     top_tracks = sp.current_user_top_tracks(time_range='long_term', limit=50)['items']
     top_tracks = sp.tracks([track['id'] for track in top_tracks])['tracks']
+    false_link = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/271deea8-e28c-41a3-aaf5-2913f5f48be6/de7834s-6515bd40-8b2c-4dc6-a843-5ac1a95a8b55.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI3MWRlZWE4LWUyOGMtNDFhMy1hYWY1LTI5MTNmNWY0OGJlNlwvZGU3ODM0cy02NTE1YmQ0MC04YjJjLTRkYzYtYTg0My01YWMxYTk1YThiNTUuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BopkDn1ptIwbmcKHdAOlYHyAOOACXW0Zfgbs0-6BY-E'
     for track in top_tracks:
         track_info = {}
-        track_info['image'] = track['album']['images'][-1] if track['album']['images'] else False
+        track_info['image'] = track['album']['images'][-1] if track['album']['images'] else false_link
         track_info['name'] = track['name']
         track_info['date'] = track['album']['release_date']
         track_info['album_name'] = track['album']['name']

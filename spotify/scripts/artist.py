@@ -120,7 +120,7 @@ def get_artist_tracks(sp, artist_id: str) -> List[tuple]:
     for artist in artists1:
         artist_info = {}
         artist_info['link'] = artist['external_urls']['spotify']
-        artist_info['image'] = artist['images'][-1]
+        artist_info['image'] = artist['images'][-1] if artist['images'] else False
         artist_info['id'] = artist['id']
         artist_info['name'] = artist['name']
         artist_info['popularity'] = artist['popularity']
@@ -147,7 +147,6 @@ def get_similar_tracks_track(sp, track_id, user_features):
         track_dict['id'] = track['id']
         track_dict['name'] = track['name']
         tracks.append(track_dict)
-    return { 'tracks': tracks }
     return { 'tracks': sorted(tracks, reverse=True, key=lambda x: x['popularity']) }
 
 def get_similar_tracks_artist(sp, artist_id, user_features):
@@ -170,5 +169,4 @@ def get_similar_tracks_artist(sp, artist_id, user_features):
         track_dict['id'] = track['id']
         track_dict['name'] = track['name']
         tracks.append(track_dict)
-    return { 'tracks': tracks }
     return { 'tracks': sorted(tracks, reverse=True, key=lambda x: x['popularity']) }

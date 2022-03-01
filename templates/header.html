@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script>$('body').on('click', () => { })</script>
 
 <head>
   <meta charset="utf-8">
@@ -31,70 +36,30 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-dark text-light fixed-top" id="main-navbar">
     <div class="block">
-      <a class="navbar-brand text-light" href="#">
-        <img src="{{ results.user.image }}" alt="" width="30" height="30"
-          class="d-inline-block align-text-top">
-        {{ results.user.name }}
+      <a class="navbar-brand text-light" href="{% url 'sign-in' %}">
+        <img src="{{ image }}" alt="" width="30" height="30" class="d-inline-block align-text-top">
+        {{ id }}
       </a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link text-light" href="{% url 'sign-in' %}">Profile</a>
+            <a class="btn text-light">Playlist:</a>
           </li>
-          <li class="nav-item">
-            <a class="btn text-light" onclick="this.blur();" data-bs-toggle="collapse" href="#collapseExample"
-              role="button">
-              Playlist <span class="badge bg-secondary" id="track-count">{{playlist_tracks|length}}</span>
-            </a>
-          </li>
-          <div class="collapse" id="collapseExample">
             <div class="row text-start .row-cols-2">
-              <div class="dropdown col">
+              <div class="dropdown col bg-dark">
                 <select class="form-select" id="playlist-form">
+                  {% if selected_playlist_id %}
+                  <option value="{{selected_playlist_id}}" selected>{{ selected_playlist_name }}</option>
+                  {% else %}
                   <option selected>Choose playlist...</option>
+                  {% endif %}
                   <option value="new">+ New Playlist</option>
                   {% for playlist in playlists %}
                   <option value="{{ playlist.id }}">{{ playlist.name }}</option>
                   {% endfor %}
                 </select>
               </div>
-              <div class="col-sm">
-                <button class="btn btn-primary" type="submit" id="add-to-playlist">Add</button>
-              </div>
-              <div class="row text-start .row-cols-2" id="songs">
-                {% for track in playlist_tracks %}
-                <div class=row>
-                  <div class="col-sm-1"><img id='addimage{{ forloop.counter }}' class="img-fluid" width="30px"
-                      height="30px" src="{{ track.image }}"></div>
-                  <div class="col-sm-4">
-                    <div class="row">{{ track.name }}</div>
-                    <div class="row">{{ track.artists }}</div>
-                  </div>
-                  <div class="col-sm-1">
-                    <button type="button" id="b{{ track.id }}" class="btn-close btn-close-white"></button>
-                  </div>
-                  <script>
-                    $("#b{{ track.id }}").on('click', (e) => {
-                      console.log('clicked)')
-                      e.preventDefault();
-                      $.ajax({
-                        type: 'GET',
-                        url: "/remove",
-                        data: { 'id': track.id},
-                        success: (response) => {
-                          $('t{{ track.id }}').empty()
-                        },
-                        error: (response) => {
-                          alert(response);
-                        }
-                      })
-                    })
-                  </script>
-                </div>
-                {% endfor %}
-              </div>
             </div>
-          </div>
         </ul>
       </div>
     </div>
@@ -127,12 +92,6 @@
 
 <body>
   <!-- Template Main CSS File -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-    crossorigin="anonymous"></script>
-  <script>$('body').on('click', () => { })</script>
   <script>
     $(() => {
       $("#modalForm").validate({
@@ -149,8 +108,21 @@
       })
     })
     $('#playlist-form').change(() => {
-      if ($('#playlist-form').get(0).value == "new") {
+      if ($('#playlist-form option:selected').text() == "new") {
         $("#exampleModal").modal("show");
+      } else {
+        playlist = $('#playlist-form option:selected')
+        $.ajax({
+          type: 'GET',
+          url: "/select_playlist",
+          data: { 'name': playlist.text(), 'id': playlist.val() },
+          success: (response) => {
+            console.log(response['id']);
+          },
+          error: (response) => {
+            alert(response);
+          }
+        })
       }
     });
     $('#create-playlist').on('click', (e) => {
@@ -171,6 +143,46 @@
         }
       })
     })
+  </script>
+  <div class="container py-4"></div>
+  {% block body %}
+  {% endblock %}
+</body>
+
+</html>
+
+<!-- <div class="row text-start .row-cols-2" id="songs">
+  {% for track in playlist_tracks %}
+  <div class=row id="t{{ track.id }}">
+    <div class="col-sm-1"><img id='addimage{{ forloop.counter }}' class="img-fluid" width="30px"
+        height="30px" src="{{ track.image }}"></div>
+    <div class="col-sm-4 block">
+      <div class="row block text-truncate">{{ track.name }}</div>
+      <div class="row block text-truncate">{{ track.artists }}</div>
+    </div>
+    <div class="col-sm-1">
+      <button type="button" id="b{{ track.id }}" class="btn-close btn-close-white"></button>
+    </div>
+  </div>
+  <script>
+    $(`#b{{track.id}}`).on('click', (e) => {
+      e.preventDefault();
+      $.ajax({
+        type: 'GET',
+        url: "/remove",
+        data: { 'id': "{{ track.id}}" },
+        success: (response) => {
+          console.log("removed {{track.id}}")
+          $(`#t{{track.id}}`).empty()
+          $('#track-count').text(parseInt($('#track-count').text() - 1 > 0 ? parseInt($('#track-count').text() - 1) : 0))
+        },
+        error: (response) => {
+          alert(response);
+        }
+      })
+    })
+  </script>
+  <script>
     $('#add-to-playlist').on('click', (e) => {
       e.preventDefault();
       $.ajax({
@@ -195,9 +207,4 @@
       })
     })
   </script>
-  <div class="container py-4"></div>
-  {% block body %}
-  {% endblock %}
-</body>
-
-</html>
+  {% endfor %} -->
