@@ -26,13 +26,13 @@ INSTALLED_APPS = [
     'spotify',
 ]
 
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
 
-SESSION_COOKIE_DOMAIN = ".herokuapp.com"
-CSRF_COOKIE_DOMAIN = ".herokuapp.com"
+# SESSION_COOKIE_DOMAIN = ".herokuapp.com"
+# CSRF_COOKIE_DOMAIN = ".herokuapp.com"
 
-SECURE_SSL_REDIRECT = False
+# SECURE_SSL_REDIRECT = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 ROOT_URLCONF = 'config.urls'
 
@@ -70,12 +70,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = { "default": env.dj_db_url("DATABASE_URL")}
 
 
 AUTH_PASSWORD_VALIDATORS = [
