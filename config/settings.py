@@ -1,7 +1,6 @@
 from pathlib import Path
 import os
 from environs import Env
-import dj_database_url
 env = Env()
 env.read_env()
 
@@ -27,11 +26,11 @@ INSTALLED_APPS = [
     'spotify',
 ]
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
-SESSION_COOKIE_DOMAIN = ".herokuapp.com"
-CSRF_COOKIE_DOMAIN = ".herokuapp.com"
+# SESSION_COOKIE_DOMAIN = ".herokuapp.com"
+# CSRF_COOKIE_DOMAIN = ".herokuapp.com"
 
 SECURE_SSL_REDIRECT = True
 
@@ -42,7 +41,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -72,8 +71,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 DATABASES = {
-    # 'default': env.dj_db_url("DATABASE_URL")
-    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    'default': env.dj_db_url("DATABASE_URL")
 }
 
 
