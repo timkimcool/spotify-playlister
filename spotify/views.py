@@ -35,7 +35,6 @@ def get_context_var(request):
 class HomeView(TemplateView):
     template_name = 'base.html'
     def get(self, request):
-        request.session.flush()
         request.session['first'] = True
         return render(request, 'base.html')
 
