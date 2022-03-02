@@ -7,7 +7,7 @@ env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = env.bool("DEBUG", default=False)
+DEBUG = env.bool("DEBUG", default=True)
 
 ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
 SECRET_KEY = env.str("SECRET_KEY")
@@ -26,13 +26,13 @@ INSTALLED_APPS = [
     'spotify',
 ]
 
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
-# SESSION_COOKIE_DOMAIN = ".herokuapp.com"
-# CSRF_COOKIE_DOMAIN = ".herokuapp.com"
+SESSION_COOKIE_DOMAIN = ".herokuapp.com"
+CSRF_COOKIE_DOMAIN = ".herokuapp.com"
 
-# SECURE_SSL_REDIRECT = False
+SECURE_SSL_REDIRECT = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
