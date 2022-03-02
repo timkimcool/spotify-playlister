@@ -93,7 +93,7 @@ class SimilarTrackArtistView(TemplateView):
             'tracks': track_info, 
             'name': kwargs['name'],
         } | get_context_var(request)
-        return render(request, context)
+        return render(request, 'similar-tracks.html', context)
 
 class ArtistView(TemplateView):
     def post(self, request, *args, **kwargs):
