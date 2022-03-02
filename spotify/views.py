@@ -35,6 +35,7 @@ def get_context_var(request):
 class HomeView(TemplateView):
     template_name = 'base.html'
     def get(self, request):
+        request.session.flush()
         request.session['first'] = True
         return render(request, 'base.html')
 
@@ -155,13 +156,7 @@ class SignInView(TemplateView):
                 auth_url = sp_oauth.get_authorize_url()
                 return HttpResponseRedirect(auth_url)
         sp = spotipy.Spotify(auth=request.session['access'])
-        try:
-            results = get_user_summary(sp)
-        except:
-            cache_handler = DjangoSessionCacheHandler(request)
-            sp_oauth = oauth2.SpotifyOAuth(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, scope=scope, cache_handler=cache_handler)
-            auth_url = sp_oauth.get_authorize_url()
-            return HttpResponseRedirect(auth_url)
+        results = get_user_summary(sp)
         playlists = get_user_playlists(sp)
         if not request.session.get('image', ""):
             request.session['id'] = results['id']
