@@ -41,8 +41,8 @@ class HomeView(TemplateView):
 
 class TopTracksView(TemplateView):
     def get(self, request):
+        a = request.session.items()
         sp = spotipy.Spotify(request.session['access'])
-        # logger.error(request.session.items())
         context = {
             'long': get_top_track_info(sp, 'long_term'),
             'medium': get_top_track_info(sp, 'medium_term'),
@@ -164,6 +164,10 @@ class SignInView(TemplateView):
             request.session['playlists'] = playlists
             request.session['user_features'] = results['user_features']
             request.session['tracks'] = ""
+
+        if not request.session.get('access'):
+            request.session['access'] = token_info["access_token"]
+
         results = get_user_summary(sp)
         playlists = get_user_playlists(sp)
         data = {
