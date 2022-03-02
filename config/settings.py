@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from environs import Env
+import dj_database_url
 env = Env()
 env.read_env()
 
@@ -71,7 +72,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 DATABASES = {
-    'default': env.dj_db_url("DATABASE_URL")
+    # 'default': env.dj_db_url("DATABASE_URL")
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
 
 
