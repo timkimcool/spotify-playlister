@@ -155,7 +155,13 @@ class SignInView(TemplateView):
                 auth_url = sp_oauth.get_authorize_url()
                 return HttpResponseRedirect(auth_url)
         sp = spotipy.Spotify(auth=request.session['access'])
-        results = get_user_summary(sp)
+        try:
+            results = get_user_summary(sp)
+        except:
+            cache_handler = DjangoSessionCacheHandler(request)
+            sp_oauth = oauth2.SpotifyOAuth(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, scope=scope, cache_handler=cache_handler)
+            auth_url = sp_oauth.get_authorize_url()
+            return HttpResponseRedirect(auth_url)
         playlists = get_user_playlists(sp)
         if not request.session.get('image', ""):
             request.session['id'] = results['id']
