@@ -1,10 +1,10 @@
 {% for track in tracks %}
 {% if track.top %}
-<div class="row border border-success">
+<div class="row border border-success py-2">
 {% else %}
-<div class="row">
+<div class="row row-cols-2 py-2">
 {% endif %}
-  <div class="col-3 py-2"><img id='image{{ forloop.counter }}{{ length }}' width="100px" height="100px"
+  <div class="col-2"><img id='image{{ forloop.counter }}{{ length }}' width="60px" height="60px"
       src="{{ track.image.url }}">
     <audio id="audio{{ forloop.counter }}{{ length }}" src="{{ track.preview }}"></audio>
     <script>
@@ -18,16 +18,16 @@
       });
     </script>
   </div>
-  <div class="col-7 py-2">
-    <div class="col text-start block text-truncate"><a href="{{ track.link }}">{{ track.name }} ({{ track.popularity }})</a></div>
-    <div class="col block text-truncate">{{ track.album_name }}</div>
-    <div class="col block text-truncate">{{ track.artists }}</div>
-    <div class="col">{{ track.date }}</div>
+  <div class="col-8">
+    <div class="col block text-start text-truncate" style=""><a href="{{ track.link }}">{{ track.name }} ({{ track.popularity }})</a></div>
+    <div class="col block text-start text-truncate">{{ track.artists }}</div>
   </div>
-  <div class="col">
-    <div class="col py-2"><a class="btn btn-outline-light" href="{% url 'similar_tracks_track' track.id track.name %}">Recs</a></div>
-    <div class="col py-2"><a class="btn btn-outline-light" id="add{{ forloop.counter }}{{ track.id }}">Add</a></div>
+  <div class="col-2">
+    <div class="row"><a class="btn btn-outline-light btn-dark btn-sm" href="{% url 'similar_tracks_track' track.id track.name %}">Similar</a></div>
+    <div class="row"><a class="btn btn-outline-light btn-dark btn-sm" id="add{{ forloop.counter }}{{ track.id }}">Add</a></div>
   </div> 
+</div>
+
   <script>
     $("#add{{forloop.counter}}{{ track.id }}").on('click', (e) => {
       e.preventDefault();
@@ -54,8 +54,6 @@
       })
     });
   </script>
-
-</div>
 {% endfor %}
 
 <!-- $("#add{{forloop.counter}}{{ track.id }}").on('click', (e) => {

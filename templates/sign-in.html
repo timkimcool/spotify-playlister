@@ -4,23 +4,23 @@
 
 {% block body %}
 
-<div class="container px-2">
+<div class="container px-2 text-light">
   <div class="container">
     <div class="text-center p-1"><img width="200px" height="200px" src="{{ results.image }}"></div>
-    <h4 class="text-center p-1">{{ results.id }}</h4>
-    <div class="text-center p-1">{{ results.email }}</div>
+    <div class="text-center p-1">{{ results.id }}</div>
+    <div class="text-center p-1 mb-3">{{ results.email }}</div>
   </div>
-  {% if first %}
-  <div class="offcanvas offcanvas-top show" tabindex="-1" id="offcanvas">
+  <div class="offcanvas offcanvas-top bg-dark show" tabindex="-1" id="offcanvas">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasLabel">Welcome!</h5>
+      <h5 class="offcanvas-title bg-dark" id="offcanvasLabel">Welcome!</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
     </div>
-    <div class="offcanvas-body">
+    <div class="offcanvas-body bg-dark">
       <ul>The number inside the parenthesis is popularity (out of 100)</ul>
-      <ul>Click on See more to dig into the your artists and tracks</ul>
-      <ul>Click the "Recs" button to see track recommendations based on artist/track and your listening preference</ul>
+      <ul>Click on 'See More' to dig into the your artists and tracks</ul>
+      <ul>Click the "Similar" button to see track recommendations based on artist/track and your listening preference</ul>
       <ul>Choose a playlist and click "Add" to add the track to your playlist</ul>
+      <ul>Hover over track album cover to hear a preview of the track</ul>
       <ul>Select "+New Playlist" to create a new playlist</ul>
     </div>
   </div>
@@ -38,7 +38,6 @@
       })
     });
   </script>
-  {% endif %}
 
   <div class="container">
     <div class="row gx-5">
@@ -69,7 +68,7 @@
             <div class="col text-end"><a href="{% url 'get_top_artists' %}">See More</a></div>
           </div>
           {% for artist in results.artists %}
-          <div class="row row-cols-2 hoverable px-3">
+          <div class="row row-cols-2 px-3">
             <div class="col-3 py-2 align-content-center"><img width="50px" height="50px" src="{{ artist.image.url }}">
             </div>
             <div class="col-9 py-2 text-start text-truncate">
@@ -91,7 +90,7 @@
             <div class="col text-end"><a href="{% url 'get_top_tracks' %}">See More</a></div>
           </div>
           {% for track in results.tracks %}
-          <div class="row row-cols-2 hoverable px-3">
+          <div class="row row-cols-2 px-3">
             <div class="col-3 py-2"><img id='image{{ forloop.counter }}' width="50px" height="50px"
                 src="{{ track.image.url }}">
               <audio id="audio{{ forloop.counter }}" src="{{ track.preview }}"></audio>

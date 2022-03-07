@@ -6,25 +6,25 @@
 --------------------------------------------------------------*/
 body {
   font-family: "Open Sans", sans-serif;
-  color: #fff;
-  background-color: rgb(33, 35, 35);
+  color: #e6e1e1;
+  background-color: #2e3333;
   background-size: cover;
-  padding-top: 60px;
+  padding-top: 50px;
 }
-@media (max-width: 980px) {
+/* @media (max-width: 980px) {
   body {
     background-attachment: fixed;
     padding-top: 0px;
   }
-}
+} */
 
 a {
-  color: #24b7a4;
+  color: #329cfc;
   text-decoration: none;
 }
 
 a:hover {
-  color: #36d8c3;
+  color: #1a88ed;
   text-decoration: none;
 }
 

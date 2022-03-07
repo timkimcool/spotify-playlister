@@ -60,7 +60,7 @@ def get_user_top_artist_info(sp) -> Dict:
     count = 0
     other_count = 0
     for k, v in genres:
-        if count < 10:
+        if count < 8:
             genre_info['top'].append((k.title(), v / genre_total * 100))
         else:
             genre_info['other'].append((k.title(), v / genre_total * 100))

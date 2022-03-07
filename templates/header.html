@@ -34,35 +34,33 @@
 </head>
 <header>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-dark text-light fixed-top" id="main-navbar">
-    <div class="block">
+  <nav class="navbar navbar-expand-sm bg-dark text-light fixed-top" id="main-navbar">
+    <div class="block p-2">
       <a class="navbar-brand text-light" href="{% url 'sign-in' %}">
         <img src="{{ image }}" alt="" width="30" height="30" class="d-inline-block align-text-top">
         {{ id }}
       </a>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="btn text-light">Playlist:</a>
-          </li>
-            <div class="row text-start .row-cols-2">
-              <div class="dropdown col bg-dark">
-                <select class="form-select" id="playlist-form">
-                  {% if selected_playlist_id %}
-                  <option value="{{selected_playlist_id}}" selected>{{ selected_playlist_name }}</option>
-                  {% else %}
-                  <option selected>Choose playlist...</option>
-                  {% endif %}
-                  <option value="new">+ New Playlist</option>
-                  {% for playlist in playlists %}
-                  <option value="{{ playlist.id }}">{{ playlist.name }}</option>
-                  {% endfor %}
-                </select>
-              </div>
+    </div>
+      <div id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto row">
+          <div class="nav-item">
+            <div class="dropdown bg-dark">
+              <select class="form-select" id="playlist-form">
+                {% if selected_playlist_id %}
+                <option value="{{selected_playlist_id}}" selected>{{ selected_playlist_name }}</option>
+                {% else %}
+                <option selected>Choose playlist...</option>
+                {% endif %}
+                <option value="new">+ New Playlist</option>
+                {% for playlist in playlists %}
+                <option value="{{ playlist.id }}">{{ playlist.name }}</option>
+                {% endfor %}
+              </select>
             </div>
+          </div>
         </ul>
       </div>
-    </div>
+
   </nav>
 
   <div class="modal fade" id="exampleModal" tabindex="-1" data-backdrop="false">

@@ -32,7 +32,7 @@ INSTALLED_APPS = [
 # SESSION_COOKIE_DOMAIN = ".herokuapp.com"
 # CSRF_COOKIE_DOMAIN = ".herokuapp.com"
 
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

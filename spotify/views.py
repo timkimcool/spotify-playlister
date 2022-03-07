@@ -37,6 +37,7 @@ class HomeView(TemplateView):
     def get(self, request):
         request.session.flush()
         request.session['first'] = True
+        logger.error(request.session.items())
         return render(request, 'base.html')
 
 class TopTracksView(TemplateView):
@@ -146,17 +147,20 @@ class AddToPlaylistView(TemplateView):
 
 class SignInView(TemplateView):
     def get(self, request, **kwargs):
-        cache_handler = DjangoSessionCacheHandler(request)
-        sp_oauth = oauth2.SpotifyOAuth(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, scope=scope, cache_handler=cache_handler)
-        if not request.session.get('access', ""):
+        try:
+            sp = spotipy.Spotify(auth=request.session['access'])
+            results = get_user_summary(sp)
+        except:
+            cache_handler = DjangoSessionCacheHandler(request)
+            sp_oauth = oauth2.SpotifyOAuth(SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, scope=scope, cache_handler=cache_handler)
             if request.GET.get('code'):
                 token_info = sp_oauth.get_access_token(request.GET.get('code'))
                 request.session['access'] = token_info["access_token"]
             else:
                 auth_url = sp_oauth.get_authorize_url()
                 return HttpResponseRedirect(auth_url)
-        sp = spotipy.Spotify(auth=request.session['access'])
-        results = get_user_summary(sp)
+            sp = spotipy.Spotify(auth=request.session['access'])
+            results = get_user_summary(sp)
         playlists = get_user_playlists(sp)
         if not request.session.get('image', ""):
             request.session['id'] = results['id']
