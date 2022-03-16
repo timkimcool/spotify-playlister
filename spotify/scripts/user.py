@@ -34,7 +34,7 @@ def get_user_profile_info(sp) -> Dict:
     user_info['id'] = user_profile['id']
     user_info['name'] = user_profile['display_name']
     user_info['email'] = user_profile.get('email', "")
-    user_info['image'] = user_profile['images'][2] if user_profile['images'] else false_link
+    user_info['image'] = user_profile['images'][-1] if user_profile['images'] else false_link
     return user_info['id'], user_info['name'], user_info['email'], user_info['image']
 
 def get_user_top_artist_info(sp) -> Dict:
